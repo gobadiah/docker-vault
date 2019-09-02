@@ -1,9 +1,9 @@
 FROM vault:0.10.0 as vault
 
-FROM docker:18.04.0-ce-git
+FROM docker:19-git
 
 RUN apk update && apk add --no-cache vim curl wget procps jq sudo zsh bash \
-  ncurses openssl nodejs gnupg
+  ncurses openssl nodejs gnupg yarn
 RUN apk add pass --update-cache \
   --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ \
   --allow-untrusted
@@ -21,7 +21,7 @@ RUN wget https://github.com/direnv/direnv/releases/download/v2.15.2/direnv.linux
   echo 'eval "$(direnv hook zsh)"' >> ~/.zshrc && \
   echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
 
-RUN npm install -g heroku
+RUN yarn global add heroku
 
 ADD https://storage.googleapis.com/kubernetes-release/release/v1.10.1/bin/linux/amd64/kubectl /usr/local/bin/kubectl
 
@@ -35,6 +35,11 @@ RUN apk add --no-cache python3 && \
     if [[ ! -e /usr/bin/python ]]; then ln -sf /usr/bin/python3 /usr/bin/python; fi && \
     rm -r /root/.cache
 
-RUN apk add yarn
+
+# See https://github.com/facebook/flow/issues/3649 for an explanation for this
+RUN apk --no-cache add ca-certificates
+RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
+RUN wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.28-r0/glibc-2.28-r0.apk
+RUN apk add glibc-2.28-r0.apk
 
 RUN pip install datadog
