@@ -23,7 +23,7 @@ RUN wget https://github.com/direnv/direnv/releases/download/v2.15.2/direnv.linux
 
 RUN yarn global add heroku
 
-ADD https://storage.googleapis.com/kubernetes-release/release/v1.10.1/bin/linux/amd64/kubectl /usr/local/bin/kubectl
+ADD https://storage.googleapis.com/kubernetes-release/release/v1.16.0/bin/linux/amd64/kubectl /usr/local/bin/kubectl
 
 RUN chmod +x /usr/local/bin/kubectl
 
