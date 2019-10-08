@@ -43,3 +43,7 @@ RUN wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.28-r0/
 RUN apk add glibc-2.28-r0.apk
 
 RUN pip install datadog
+
+RUN apk add curl && apk upgrade
+
+RUN curl -sL https://sentry.io/get-cli/ | bash
